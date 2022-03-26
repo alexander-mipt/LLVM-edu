@@ -1,12 +1,3 @@
-//===-- SimInstrFormats.td - Sim Instruction Formats -----*- tablegen -*-===//
-//
-//                     The LLVM Compiler Infrastructure
-//
-// This file is distributed under the University of Illinois Open Source
-// License. See LICENSE.TXT for details.
-//
-//===----------------------------------------------------------------------===//
-
 //===----------------------------------------------------------------------===//
 //  Describe Sim instructions format
 //
@@ -46,4 +37,10 @@ class SimInst<bits<8> op, dag outs, dag ins, string asmstr, list<dag> pattern>: 
   let AsmString   = asmstr;
   let Pattern     = pattern;
 
+}
+
+// Pseudo instructions format
+class SimPseudoInst<dag outs, dag ins, string asmstr, list<dag> pattern>
+   : SimInst<0, outs, ins, asmstr, pattern> {
+  let isPseudo = 1;
 }

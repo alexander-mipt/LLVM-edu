@@ -1,10 +1,3 @@
-//===- SimInstrInfo.td - Target Description for Sim Target -*- tablegen -*-=//
-//
-//                     The LLVM Compiler Infrastructure
-//
-// This file is distributed under the University of Illinois Open Source
-// License. See LICENSE.TXT for details.
-//
 //===----------------------------------------------------------------------===//
 //
 // This file contains the Sim implementation of the TargetInstrInfo class.
@@ -14,6 +7,17 @@
 //===----------------------------------------------------------------------===//
 // Sim profiles and nodes
 //===----------------------------------------------------------------------===//
+
+def SDT_SimCallSeqStart : SDCallSeqStart<[ SDTCisVT<0, i32>,
+                                           SDTCisVT<1, i32> ]>;
+def SDT_SimCallSeqEnd   : SDCallSeqEnd<[ SDTCisVT<0, i32>,
+                                         SDTCisVT<1, i32> ]>;
+
+// These are target-independent nodes, but have target-specific formats.
+def callseq_start : SDNode<"ISD::CALLSEQ_START", SDT_SimCallSeqStart,
+                           [SDNPHasChain, SDNPOutGlue]>;
+def callseq_end   : SDNode<"ISD::CALLSEQ_END",   SDT_SimCallSeqEnd,
+                           [SDNPHasChain, SDNPOptInGlue, SDNPOutGlue]>;
 
 def SDT_SimRet          : SDTypeProfile<0, 1, [SDTCisInt<0>]>;
 
@@ -26,6 +30,19 @@ def SimRet : SDNode<"SimISD::Ret", SDTNone,
 //===----------------------------------------------------------------------===//
 
 include "SimInstrFormats.td"
+
+//===----------------------------------------------------------------------===//
+// Pseudo Instructions
+//===----------------------------------------------------------------------===//
+
+let Defs = [R0], Uses = [R0] in { // TODO: SP
+def ADJCALLSTACKDOWN : SimPseudoInst<(outs), (ins i32imm:$amt, i32imm:$amt2),
+                               "# ADJCALLSTACKDOWN $amt, $amt2",
+                               [(callseq_start timm:$amt, timm:$amt2)]>;
+def ADJCALLSTACKUP : SimPseudoInst<(outs), (ins i32imm:$amt1, i32imm:$amt2),
+                            "# ADJCALLSTACKUP $amt1",
+                            [(callseq_end timm:$amt1, timm:$amt2)]>;
+}
 
 //===----------------------------------------------------------------------===//
 // Sim Operand, Complex Patterns and Transformations Definitions.
@@ -61,7 +78,7 @@ class RetBase<RegisterClass RC>: Branches<0x3c, "RET", RC> {
 // Sim Instructions
 //===----------------------------------------------------------------------===//
 
-def RET     : RetBase<CPURegs>;
+def RET     : RetBase<GPR>;
 
 /// No operation
 def NOP   : SimInst<0, (outs), (ins), "nop", []>;
