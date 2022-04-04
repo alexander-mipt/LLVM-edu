@@ -1,5 +1,5 @@
-#ifndef LLVM_LIB_TARGET_SIM_SIMINSTRINFO_H
-#define LLVM_LIB_TARGET_SIM_SIMINSTRINFO_H
+#ifndef LLVM_LIB_TARGET_USIM_USIMINSTRINFO_H
+#define LLVM_LIB_TARGET_USIM_USIMINSTRINFO_H
 
 #include "SimRegisterInfo.h"
 #include "llvm/CodeGen/TargetInstrInfo.h"
@@ -63,4 +63,4 @@ public:
 
 } // end namespace llvm
 
-#endif // LLVM_LIB_TARGET_SIM_SIMINSTRINFO_H
+#endif // LLVM_LIB_TARGET_USIM_USIMINSTRINFO_H

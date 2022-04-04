@@ -55,13 +55,12 @@ public:
       : TargetPassConfig(TM, PM) {}
 
   SimTargetMachine &getSimTargetMachine() const {
-    llvm_unreachable("");
     return getTM<SimTargetMachine>();
   }
 
   bool addInstSelector() override;
-  void addPreEmitPass() override;
-  void addPreRegAlloc() override;
+  // void addPreEmitPass() override;
+  // void addPreRegAlloc() override;
 };
 
 } // end anonymous namespace
@@ -70,11 +69,14 @@ TargetPassConfig *SimTargetMachine::createPassConfig(PassManagerBase &PM) {
   return new SimPassConfig(*this, PM);
 }
 
-bool SimPassConfig::addInstSelector() { llvm_unreachable(""); }
+bool SimPassConfig::addInstSelector() {
+  addPass(createSimISelDag(getSimTargetMachine(), getOptLevel()));
+  return false;
+}
 
-void SimPassConfig::addPreEmitPass() { llvm_unreachable(""); }
+// void SimPassConfig::addPreEmitPass() { llvm_unreachable(""); }
 
-void SimPassConfig::addPreRegAlloc() { llvm_unreachable(""); }
+// void SimPassConfig::addPreRegAlloc() { llvm_unreachable(""); }
 
 // Force static initialization.
 extern "C" LLVM_EXTERNAL_VISIBILITY void LLVMInitializeSimTarget() {

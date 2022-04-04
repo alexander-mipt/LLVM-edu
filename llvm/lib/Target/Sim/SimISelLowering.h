@@ -1,5 +1,5 @@
-#ifndef LLVM_LIB_TARGET_SIM_SIMISELLOWERING_H
-#define LLVM_LIB_TARGET_SIM_SIMISELLOWERING_H
+#ifndef LLVM_LIB_TARGET_USIM_USIMISELLOWERING_H
+#define LLVM_LIB_TARGET_USIM_USIMISELLOWERING_H
 
 #include "Sim.h"
 #include "llvm/CodeGen/SelectionDAG.h"
@@ -9,6 +9,22 @@ namespace llvm {
 
 class SimSubtarget;
 class SimTargetMachine;
+
+namespace SimISD {
+
+enum NodeType : unsigned {
+  // Start the numbering where the builtin ops and target ops leave off.
+  FIRST_NUMBER = ISD::BUILTIN_OP_END,
+  // BL,
+  // JL,
+  // CMP,
+  // CMOV,
+  // BRcc,
+  // GAWRAPPER,
+  RET
+};
+
+} // namespace SimISD
 
 class SimTargetLowering : public TargetLowering {
 public:
@@ -59,4 +75,4 @@ private:
 
 } // end namespace llvm
 
-#endif // LLVM_LIB_TARGET_SIM_SIMISELLOWERING_H
+#endif // LLVM_LIB_TARGET_USIM_USIMISELLOWERING_H

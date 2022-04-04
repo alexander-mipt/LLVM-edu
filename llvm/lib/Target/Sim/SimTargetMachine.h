@@ -1,5 +1,5 @@
-#ifndef LLVM_LIB_TARGET_SIM_SIMTARGETMACHINE_H
-#define LLVM_LIB_TARGET_SIM_SIMTARGETMACHINE_H
+#ifndef LLVM_LIB_TARGET_USIM_USIMTARGETMACHINE_H
+#define LLVM_LIB_TARGET_USIM_USIMTARGETMACHINE_H
 
 #include "SimInstrInfo.h"
 #include "SimSubtarget.h"
@@ -30,6 +30,15 @@ public:
     return TLOF.get();
   }
 
+#if 0
+  bool
+  addPassesToEmitFile(PassManagerBase &, raw_pwrite_stream &,
+                      raw_pwrite_stream *, CodeGenFileType,
+                      bool /*DisableVerify*/ = true,
+                      MachineModuleInfoWrapperPass *MMIWP = nullptr) override {
+    return false;
+  }
+#endif
   // TargetTransformInfo getTargetTransformInfo(const Function &F) override;
 };
 } // end namespace llvm

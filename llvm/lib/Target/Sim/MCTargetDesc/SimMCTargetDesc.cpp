@@ -1,8 +1,9 @@
 #include "SimMCTargetDesc.h"
+#include "TargetInfo/SimTargetInfo.h"
+#include "SimInfo.h"
 #include "SimInstPrinter.h"
 #include "SimMCAsmInfo.h"
-//#include "SimTargetStreamer.h"
-#include "TargetInfo/SimTargetInfo.h"
+#include "SimTargetStreamer.h"
 #include "llvm/MC/MCDwarf.h"
 #include "llvm/MC/MCInstrInfo.h"
 #include "llvm/MC/MCRegisterInfo.h"
@@ -54,11 +55,9 @@ static MCInstPrinter *createSimMCInstPrinter(const Triple &T,
                                               const MCAsmInfo &MAI,
                                               const MCInstrInfo &MII,
                                               const MCRegisterInfo &MRI) {
-  llvm_unreachable("");
   return new SimInstPrinter(MAI, MII, MRI);
 }
 
-#if 0
 SimTargetStreamer::SimTargetStreamer(MCStreamer &S) : MCTargetStreamer(S) {}
 SimTargetStreamer::~SimTargetStreamer() = default;
 
@@ -68,7 +67,6 @@ static MCTargetStreamer *createTargetAsmStreamer(MCStreamer &S,
                                                  bool isVerboseAsm) {
   return new SimTargetStreamer(S);
 }
-#endif
 
 // Force static initialization.
 extern "C" LLVM_EXTERNAL_VISIBILITY void LLVMInitializeSimTargetMC() {
@@ -88,8 +86,7 @@ extern "C" LLVM_EXTERNAL_VISIBILITY void LLVMInitializeSimTargetMC() {
 
   // Register the MCInstPrinter
   TargetRegistry::RegisterMCInstPrinter(TheSimTarget, createSimMCInstPrinter);
-#if 0
-    TargetRegistry::RegisterAsmTargetStreamer(TheSimTarget,
-                                              createTargetAsmStreamer);
-#endif
+
+  TargetRegistry::RegisterAsmTargetStreamer(TheSimTarget,
+                                            createTargetAsmStreamer);
 }

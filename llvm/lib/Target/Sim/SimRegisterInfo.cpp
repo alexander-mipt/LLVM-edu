@@ -34,17 +34,21 @@ bool SimRegisterInfo::needsFrameMoves(const MachineFunction &MF) {
 
 const MCPhysReg *
 SimRegisterInfo::getCalleeSavedRegs(const MachineFunction *MF) const {
-  llvm_unreachable("");
-  // const SimSubtarget &Subtarget = MF.getSubtarget<SimSubtarget>();
+  return CSR_Sim_SaveList;
 }
 
 BitVector SimRegisterInfo::getReservedRegs(const MachineFunction &MF) const {
-  llvm_unreachable("");
+  BitVector Reserved(getNumRegs());
+  Reserved.set(Sim::R0);
+  Reserved.set(Sim::R1);
+  Reserved.set(Sim::R2);
+  Reserved.set(Sim::R3);
+  return Reserved;
 }
 
 bool SimRegisterInfo::requiresRegisterScavenging(
     const MachineFunction &MF) const {
-  llvm_unreachable("");
+  return false; // TODO: what for?
 }
 
 #if 0
@@ -54,10 +58,29 @@ bool SimRegisterInfo::useFPForScavengingIndex(
 }
 #endif
 
+// TODO: rewrite!
 void SimRegisterInfo::eliminateFrameIndex(MachineBasicBlock::iterator II,
                                            int SPAdj, unsigned FIOperandNum,
                                            RegScavenger *RS) const {
-  llvm_unreachable("");
+  assert(SPAdj == 0 && "Unexpected non-zero SPAdj value");
+
+  MachineInstr &MI = *II;
+  MachineFunction &MF = *MI.getParent()->getParent();
+  DebugLoc DL = MI.getDebugLoc();
+
+  int FrameIndex = MI.getOperand(FIOperandNum).getIndex();
+  Register FrameReg;
+  int Offset = getFrameLowering(MF)
+                   ->getFrameIndexReference(MF, FrameIndex, FrameReg)
+                   .getFixed();
+  Offset += MI.getOperand(FIOperandNum + 1).getImm();
+
+  if (!isInt<16>(Offset)) {
+    llvm_unreachable("");
+  }
+
+  MI.getOperand(FIOperandNum).ChangeToRegister(FrameReg, false, false, false);
+  MI.getOperand(FIOperandNum + 1).ChangeToImmediate(Offset);
 }
 
 Register SimRegisterInfo::getFrameRegister(const MachineFunction &MF) const {
