@@ -1,5 +1,5 @@
-#ifndef LLVM_LIB_TARGET_USIM_USIMISELLOWERING_H
-#define LLVM_LIB_TARGET_USIM_USIMISELLOWERING_H
+#ifndef LLVM_LIB_TARGET_SIM_SIMISELLOWERING_H
+#define LLVM_LIB_TARGET_SIM_SIMISELLOWERING_H
 
 #include "Sim.h"
 #include "llvm/CodeGen/SelectionDAG.h"
@@ -15,13 +15,9 @@ namespace SimISD {
 enum NodeType : unsigned {
   // Start the numbering where the builtin ops and target ops leave off.
   FIRST_NUMBER = ISD::BUILTIN_OP_END,
-  // BL,
-  // JL,
-  // CMP,
-  // CMOV,
-  // BRcc,
-  // GAWRAPPER,
-  RET
+  RET,
+  CALL,
+  BR_CC,
 };
 
 } // namespace SimISD
@@ -42,6 +38,8 @@ public:
   bool isLegalAddressingMode(const DataLayout &DL, const AddrMode &AM, Type *Ty,
                              unsigned AS,
                              Instruction *I = nullptr) const override;
+
+  SimSubtarget const &getSubtarget() const { return STI; }
 
 private:
   const SimSubtarget &STI;
@@ -71,8 +69,11 @@ private:
                       LLVMContext &Context) const override;
 
   bool mayBeEmittedAsTailCall(const CallInst *CI) const override;
+
+  SDValue lowerBR_CC(SDValue Op, SelectionDAG &DAG) const;
+  SDValue lowerFRAMEADDR(SDValue Op, SelectionDAG &DAG) const;
 };
 
 } // end namespace llvm
 
-#endif // LLVM_LIB_TARGET_USIM_USIMISELLOWERING_H
+#endif // LLVM_LIB_TARGET_SIM_SIMISELLOWERING_H

@@ -4,8 +4,8 @@
 //
 //===----------------------------------------------------------------------===//
 
-#ifndef LLVM_LIB_TARGET_USIM_USIMMACHINEFUNCTIONINFO_H
-#define LLVM_LIB_TARGET_USIM_USIMMACHINEFUNCTIONINFO_H
+#ifndef LLVM_LIB_TARGET_SIM_SIMMACHINEFUNCTIONINFO_H
+#define LLVM_LIB_TARGET_SIM_SIMMACHINEFUNCTIONINFO_H
 
 #include "llvm/CodeGen/MachineFunction.h"
 #include <vector>
@@ -57,4 +57,4 @@ public:
 
 } // end namespace llvm
 
-#endif // LLVM_LIB_TARGET_USIM_USIMMACHINEFUNCTIONINFO_H
+#endif // LLVM_LIB_TARGET_SIM_SIMMACHINEFUNCTIONINFO_H

@@ -1,5 +1,5 @@
-#ifndef LLVM_LIB_TARGET_USIM_USIMFRAMELOWERING_H
-#define LLVM_LIB_TARGET_USIM_USIMFRAMELOWERING_H
+#ifndef LLVM_LIB_TARGET_SIM_SIMFRAMELOWERING_H
+#define LLVM_LIB_TARGET_SIM_SIMFRAMELOWERING_H
 
 #include "Sim.h"
 #include "llvm/CodeGen/MachineBasicBlock.h"
@@ -50,13 +50,6 @@ public:
 
   bool hasReservedCallFrame(const MachineFunction &MF) const override;
 
-#if 0
-  // TODO: eliminate
-  bool assignCalleeSavedSpillSlots(
-      llvm::MachineFunction &, const llvm::TargetRegisterInfo *,
-      std::vector<llvm::CalleeSavedInfo> &) const override;
-#endif
-
 private:
   void adjustStackToMatchRecords(MachineBasicBlock &MBB,
                                  MachineBasicBlock::iterator MI,
@@ -71,4 +64,4 @@ private:
 
 } // end namespace llvm
 
-#endif // LLVM_LIB_TARGET_USIM_USIMFRAMELOWERING_H
+#endif // LLVM_LIB_TARGET_SIM_SIMFRAMELOWERING_H

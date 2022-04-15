@@ -1,5 +1,5 @@
-#ifndef LLVM_LIB_TARGET_USIM_INSTPRINTER_USIMINSTPRINTER_H
-#define LLVM_LIB_TARGET_USIM_INSTPRINTER_USIMINSTPRINTER_H
+#ifndef LLVM_LIB_TARGET_SIM_INSTPRINTER_SIMINSTPRINTER_H
+#define LLVM_LIB_TARGET_SIM_INSTPRINTER_SIMINSTPRINTER_H
 
 #include "llvm/MC/MCInstPrinter.h"
 
@@ -20,8 +20,10 @@ public:
   void printInst(const MCInst *MI, uint64_t Address, StringRef Annot,
                  const MCSubtargetInfo &STI, raw_ostream &O) override;
 
-  void printOperand(const MCInst *MI, int OpNum, raw_ostream &OS);
+  void printOperand(const MCInst *MI, int OpNo, raw_ostream &OS);
+  void printBranchOperand(const MCInst *MI, uint64_t Address, unsigned OpNo,
+                          raw_ostream &O);
 };
 } // end namespace llvm
 
-#endif // LLVM_LIB_TARGET_USIM_INSTPRINTER_USIMINSTPRINTER_H
+#endif // LLVM_LIB_TARGET_SIM_INSTPRINTER_SIMINSTPRINTER_H

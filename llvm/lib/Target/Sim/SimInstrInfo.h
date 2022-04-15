@@ -1,6 +1,7 @@
-#ifndef LLVM_LIB_TARGET_USIM_USIMINSTRINFO_H
-#define LLVM_LIB_TARGET_USIM_USIMINSTRINFO_H
+#ifndef LLVM_LIB_TARGET_SIM_SIMINSTRINFO_H
+#define LLVM_LIB_TARGET_SIM_SIMINSTRINFO_H
 
+#include "MCTargetDesc/SimInfo.h"
 #include "SimRegisterInfo.h"
 #include "llvm/CodeGen/TargetInstrInfo.h"
 
@@ -14,6 +15,8 @@ class SimSubtarget;
 class SimInstrInfo : public SimGenInstrInfo {
   const SimSubtarget &STI;
   virtual void anchor();
+
+  const MCInstrDesc &getBrCond(SimCC::CondCode CC) const;
 
 public:
   SimInstrInfo(const SimSubtarget &);
@@ -37,6 +40,8 @@ public:
 
   unsigned removeBranch(MachineBasicBlock &MBB,
                         int *BytesRemoved = nullptr) const override;
+
+  MachineBasicBlock *getBranchDestBlock(const MachineInstr &MI) const override;
 
   void copyPhysReg(MachineBasicBlock &MBB, MachineBasicBlock::iterator I,
                    const DebugLoc &, MCRegister DestReg, MCRegister SrcReg,
@@ -63,4 +68,4 @@ public:
 
 } // end namespace llvm
 
-#endif // LLVM_LIB_TARGET_USIM_USIMINSTRINFO_H
+#endif // LLVM_LIB_TARGET_SIM_SIMINSTRINFO_H

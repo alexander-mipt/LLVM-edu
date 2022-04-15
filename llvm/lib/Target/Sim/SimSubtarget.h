@@ -1,5 +1,5 @@
-#ifndef LLVM_LIB_TARGET_USIM_USIMSUBTARGET_H
-#define LLVM_LIB_TARGET_USIM_USIMSUBTARGET_H
+#ifndef LLVM_LIB_TARGET_SIM_SIMSUBTARGET_H
+#define LLVM_LIB_TARGET_SIM_SIMSUBTARGET_H
 
 #include "SimFrameLowering.h"
 #include "SimISelLowering.h"
@@ -47,4 +47,4 @@ public:
 
 } // end namespace llvm
 
-#endif // LLVM_LIB_TARGET_USIM_USIMSUBTARGET_H
+#endif // LLVM_LIB_TARGET_SIM_SIMSUBTARGET_H

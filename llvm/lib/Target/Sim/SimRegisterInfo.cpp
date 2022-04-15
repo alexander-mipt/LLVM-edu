@@ -37,6 +37,7 @@ SimRegisterInfo::getCalleeSavedRegs(const MachineFunction *MF) const {
   return CSR_Sim_SaveList;
 }
 
+// TODO: check cconv
 BitVector SimRegisterInfo::getReservedRegs(const MachineFunction &MF) const {
   BitVector Reserved(getNumRegs());
   Reserved.set(Sim::R0);
@@ -84,11 +85,12 @@ void SimRegisterInfo::eliminateFrameIndex(MachineBasicBlock::iterator II,
 }
 
 Register SimRegisterInfo::getFrameRegister(const MachineFunction &MF) const {
-  llvm_unreachable("");
+  const TargetFrameLowering *TFI = getFrameLowering(MF);
+  return TFI->hasFP(MF) ? Sim::FP : Sim::SP;
 }
 
 const uint32_t *
 SimRegisterInfo::getCallPreservedMask(const MachineFunction &MF,
                                        CallingConv::ID CC) const {
-  llvm_unreachable("");
+  return CSR_Sim_RegMask;
 }
