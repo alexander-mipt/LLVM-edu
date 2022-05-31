@@ -31,4 +31,4 @@ def CC_Sim : CallingConv<[
   CCIfType<[i32], CCAssignToStack<4, 4>>
 ]>;
 
-def CSR_Sim : CalleeSavedRegs<(add R0, R3, R5, R6, R7, R8)>;
+def CSR_Sim : CalleeSavedRegs<(add R0, R1, R3, R5, R6, R7, R8)>;

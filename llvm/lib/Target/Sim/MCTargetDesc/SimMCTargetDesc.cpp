@@ -1,5 +1,6 @@
 #include "SimMCTargetDesc.h"
 #include "TargetInfo/SimTargetInfo.h"
+#include "Sim.h"
 #include "SimInfo.h"
 #include "SimInstPrinter.h"
 #include "SimMCAsmInfo.h"
@@ -31,7 +32,7 @@ static MCInstrInfo *createSimMCInstrInfo() {
 
 static MCRegisterInfo *createSimMCRegisterInfo(const Triple &TT) {
   auto *X = new MCRegisterInfo();
-  InitSimMCRegisterInfo(X, Sim::R1);
+  InitSimMCRegisterInfo(X, Sim::RA);
   return X;
 }
 

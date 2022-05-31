@@ -22,6 +22,7 @@ void SimFrameLowering::determineCalleeSaves(MachineFunction &MF,
   TargetFrameLowering::determineCalleeSaves(MF, SavedRegs, RS);
   // Unconditionally spill RA and FP only if the function uses a frame
   // pointer.
+  errs() << MF.getName().data() << "hasfp: " << hasFP(MF) << "\n";
   if (hasFP(MF)) {
     SavedRegs.set(Sim::RA);
     SavedRegs.set(Sim::FP);

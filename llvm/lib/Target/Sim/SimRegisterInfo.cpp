@@ -24,7 +24,7 @@ using namespace llvm;
 #define GET_REGINFO_TARGET_DESC
 #include "SimGenRegisterInfo.inc"
 
-SimRegisterInfo::SimRegisterInfo() : SimGenRegisterInfo(Sim::R1) {}
+SimRegisterInfo::SimRegisterInfo() : SimGenRegisterInfo(Sim::RA) {}
 
 #if 0
 bool SimRegisterInfo::needsFrameMoves(const MachineFunction &MF) {
@@ -39,11 +39,18 @@ SimRegisterInfo::getCalleeSavedRegs(const MachineFunction *MF) const {
 
 // TODO: check cconv
 BitVector SimRegisterInfo::getReservedRegs(const MachineFunction &MF) const {
+  SimFrameLowering const *TFI = getFrameLowering(MF);
+  
   BitVector Reserved(getNumRegs());
-  Reserved.set(Sim::R0);
-  Reserved.set(Sim::R1);
-  Reserved.set(Sim::R2);
-  Reserved.set(Sim::R3);
+  Reserved.set(Sim::GP);
+  Reserved.set(Sim::SP);
+
+  if (TFI->hasFP(MF)) {
+    Reserved.set(Sim::FP);
+  }
+  if (TFI->hasBP(MF)) {
+    Reserved.set(Sim::BP);
+  }
   return Reserved;
 }
 
